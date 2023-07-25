@@ -1,0 +1,16 @@
+#################################################
+# DO Community Playbooks: Initial Server Setup
+# smbpasswd -a <user>
+#################################################
+---
+- name: Setup localhost samba server
+  hosts: localhost
+  connection: local
+  become: true
+  # vars_files:
+  #   - vars/default.yml
+
+  roles:
+    - role: setup-samba
+      vars:
+        samba_log: /var/log/samba/localShares

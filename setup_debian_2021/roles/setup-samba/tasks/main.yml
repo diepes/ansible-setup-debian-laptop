@@ -1,0 +1,34 @@
+#################################################
+# DO Community Playbooks: Initial Server Setup
+#################################################
+---
+#- hosts: localhost
+#  connection: local
+#  become: true
+- name: Include default vars
+  include_vars: "default.yml"
+
+- name: Include samba vars
+  include_vars: "samba.yml"
+
+- name: Include OS specific variables
+  include_vars: "{{ item }}"
+  with_first_found:
+    - "os_{{ ansible_distribution }}.yml"
+    - "os_{{ ansible_os_family }}.yml"
+
+# Install Packages
+- name: Update apt
+  apt: update_cache=yes
+
+- name: Install required system packages
+  apt: name={{ samba_packages }} state=latest
+
+- name: Samba configuration
+  template:
+    dest: "{{ samba_configuration }}"
+    src: smb.conf.j2
+    validate: 'testparm -s %s'
+  notify:
+    - Restart Samba services
+  tags: samba
