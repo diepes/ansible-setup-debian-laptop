@@ -3,7 +3,8 @@
 setup_samba_workgroup: 'WORKGROUP'
 setup_samba_server_string: 'Fileserver %m'
 setup_samba_log_size: 5000
-setup_samba_log_level: 1
+# set log_level to 3 default and 5 for passdb and auth
+setup_samba_log_level: "1 passdb:2 auth:2"
 setup_samba_interfaces: []
 setup_samba_security: 'user'
 setup_samba_passdb_backend: 'tdbsam'
@@ -18,7 +19,7 @@ setup_samba_shares:
   - name: Video
     comment: Vid share
     # path: "{{ lookup('env','HOME') }}/Videos"
-    path: "/home/{{ ansible_env.HOME }}/Videos"
+    path: "{{ ansible_env.HOME }}/Videos"
     public: false
     valid_users: "{{ setup_samba_create_user }}"
     # write_list:
@@ -29,7 +30,7 @@ setup_samba_shares:
   - name: Photos
     comment: Photo share
     # path: "{{ lookup('env','HOME') }}/Videos"
-    path: "/home/{{ ansible_env.HOME }}/Pictures/Photos"
+    path: "{{ ansible_env.HOME }}/Pictures/Photos"
     public: false
     valid_users: "{{ setup_samba_create_user }}"
     # write_list:

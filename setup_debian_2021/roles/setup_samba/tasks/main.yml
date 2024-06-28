@@ -20,14 +20,15 @@
 #     state: update_cache=yes
 
 - name: Install required system packages
+  become: true
   ansible.builtin.apt:
     name: "{{ item }}"
     state: present
-    # state: latest
-    update_cache: true
+    update_cache: false
   with_items: "{{ setup_samba_packages }}"
 
 - name: Samba configuration
+  become: true
   ansible.builtin.template:
     dest: "{{ setup_samba_configuration }}"
     src: smb.conf.j2

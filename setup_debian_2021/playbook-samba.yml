@@ -6,14 +6,14 @@
 - name: Setup localhost samba server
   hosts: localhost
   connection: local
-  become: true
   # vars_files:
   #   - vars/default.yml
 
   roles:
     - role: setup_samba
-      become: true
       vars:
         setup_samba_log: /var/log/samba/localShares
         setup_samba_guest_account: "nobody"
-        setup_samba_create_user: ["@smbgrp"]
+        setup_samba_create_user:
+          - "{{ ansible_env.USER }}" # Add current user to samba by default
+          - "@sambashare"  # Add user to sambashare group

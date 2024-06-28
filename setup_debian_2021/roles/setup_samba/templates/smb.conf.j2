@@ -112,7 +112,7 @@
   path = {{ share.path|default([setup_samba_shares_root, share.name]|join('/')) }}
   public = {{ share.public|default('no') }}
 {%     if share.valid_users is defined %}
-  valid users = {%- for user in share.valid_users %} {{ user }}{% endfor %}
+  valid users = {{ share.valid_users | join(',') }}
 
 {%     endif %}
 {%     if share.write_list is defined %}

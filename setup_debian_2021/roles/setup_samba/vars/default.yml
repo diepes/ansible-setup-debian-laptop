@@ -1,5 +1,6 @@
 ---
 # non used
-setup_samba_create_user: "@smbgrp"
+# setup_samba_create_user:
+#   - "@smbgrp"
 # setup_samba_copy_local_key: "{{ lookup('file', lookup('env', 'HOME') + '/.ssh/id_rsa.pub') }}"  # not used ??
 # setup_samba_sys_packages: ['curl', 'vim-gtk3', 'git', 'mosh', 'docker.io', 'firehol', 'openssh-server']
