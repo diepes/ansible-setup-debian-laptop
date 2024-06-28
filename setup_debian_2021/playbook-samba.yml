@@ -11,6 +11,9 @@
   #   - vars/default.yml
 
   roles:
-    - role: setup-samba
+    - role: setup_samba
+      become: true
       vars:
-        samba_log: /var/log/samba/localShares
+        setup_samba_log: /var/log/samba/localShares
+        setup_samba_guest_account: "nobody"
+        setup_samba_create_user: ["@smbgrp"]

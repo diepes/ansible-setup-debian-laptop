@@ -2,33 +2,37 @@
 # DO Community Playbooks: Initial Server Setup
 #################################################
 ---
-#- hosts: localhost
-#  connection: local
-#  become: true
 - name: Include default vars
-  include_vars: "default.yml"
+  ansible.builtin.include_vars: "default.yml"
 
 - name: Include samba vars
-  include_vars: "samba.yml"
+  ansible.builtin.include_vars: "samba.yml"
 
 - name: Include OS specific variables
-  include_vars: "{{ item }}"
+  ansible.builtin.include_vars: "{{ item }}"
   with_first_found:
     - "os_{{ ansible_distribution }}.yml"
     - "os_{{ ansible_os_family }}.yml"
 
 # Install Packages
-- name: Update apt
-  apt: update_cache=yes
+# - name: Update apt
+#   ansible.builtin.apt:
+#     state: update_cache=yes
 
 - name: Install required system packages
-  apt: name={{ samba_packages }} state=latest
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+    # state: latest
+    update_cache: true
+  with_items: "{{ setup_samba_packages }}"
 
 - name: Samba configuration
-  template:
-    dest: "{{ samba_configuration }}"
+  ansible.builtin.template:
+    dest: "{{ setup_samba_configuration }}"
     src: smb.conf.j2
     validate: 'testparm -s %s'
+    mode: "0640"
   notify:
     - Restart Samba services
   tags: samba

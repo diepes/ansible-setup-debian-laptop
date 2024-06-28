@@ -1,0 +1,46 @@
+# roles/samba/defaults/main.yml
+---
+setup_samba_workgroup: 'WORKGROUP'
+setup_samba_server_string: 'Fileserver %m'
+setup_samba_log_size: 5000
+setup_samba_log_level: 1
+setup_samba_interfaces: []
+setup_samba_security: 'user'
+setup_samba_passdb_backend: 'tdbsam'
+setup_samba_map_to_guest: 'never'
+setup_samba_load_printers: false
+setup_samba_printer_type: 'cups'
+setup_samba_cups_server: 'localhost:631'
+setup_samba_load_homes: false
+setup_samba_create_varwww_symlinks: false
+setup_samba_shares_root: '/srv/shares'
+setup_samba_shares:
+  - name: Video
+    comment: Vid share
+    # path: "{{ lookup('env','HOME') }}/Videos"
+    path: "/home/{{ ansible_env.HOME }}/Videos"
+    public: false
+    valid_users: "{{ setup_samba_create_user }}"
+    # write_list:
+    # group:
+    # guest_ok:
+    browseable: "yes"
+    writable: "no"
+  - name: Photos
+    comment: Photo share
+    # path: "{{ lookup('env','HOME') }}/Videos"
+    path: "/home/{{ ansible_env.HOME }}/Pictures/Photos"
+    public: false
+    valid_users: "{{ setup_samba_create_user }}"
+    # write_list:
+    # group:
+    # guest_ok:
+    browseable: "yes"
+    writable: "no"
+
+# setup_samba_users: []
+
+setup_samba_wins_support: 'yes'
+setup_samba_local_master: 'yes'
+setup_samba_domain_master: 'yes'
+setup_samba_preferred_master: 'yes'
